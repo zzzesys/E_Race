@@ -2,6 +2,9 @@
 // Created by 20728 on 2025/11/6.
 //
 #include "gpio.h"
+#include "tim.h"
+
+
 #ifndef ERACECAR_MOTOR_H
 #define ERACECAR_MOTOR_H
 
