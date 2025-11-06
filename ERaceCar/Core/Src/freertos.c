@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "chassic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +45,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osThreadId chassicTaskHandle;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -106,7 +106,8 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  osThreadDef(chassicTask,StartChassicTask,osPriorityAboveNormal,0,256);
+  chassicTaskHandle = osThreadCreate(osThread(chassicTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }

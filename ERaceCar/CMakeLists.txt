@@ -35,7 +35,13 @@ message("Build type: " ${CMAKE_BUILD_TYPE})
 enable_language(C ASM)
 
 # Create an executable object type
-add_executable(${CMAKE_PROJECT_NAME})
+add_executable(${CMAKE_PROJECT_NAME}
+        Chassic/chassic.c
+        Chassic/chassic.h
+        Chassic/motor.c
+        Chassic/motor.h
+        Chassic/mpu6050.c
+        Chassic/mpu6050.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -53,6 +59,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    Chassic
 )
 
 # Add project symbols (macros)
