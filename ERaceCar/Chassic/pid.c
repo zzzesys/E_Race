@@ -15,8 +15,7 @@ float Limit(float val,float max,float min) {
 //@param 增量式与位置式各个参数都不同
 void PID_Init(PID *pid,PID_TYPE Type,float kp,float ki,
     float kd,float sum_limit_max,float sum_limit_min,
-    float out_limit_max,float out_limit_min)
-{
+    float out_limit_max,float out_limit_min){
     pid->type=Type;
     pid->kp=kp;
     pid->ki=ki;
@@ -50,17 +49,22 @@ float PID_Calc(PID *pid,float input) {
         pid->output=pid->kp*pid->error+pid->ki*pid->sum_error+pid->kd*pid->error-pid->pre_error;
         pid->output=Limit(pid->output,pid->out_limit_max,pid->out_limit_min);
 
+        pid->pre_pre_error=pid->pre_error;
+        pid->pre_error=pid->error;
+
         return pid->output;
     }
     else if (pid->type==PID_DELTA) {
-        pid->output=pid->kp*(pid->error-pid->pre_error)+pid->ki*pid->error+pid.kd*(pid->error-2*pid->pre_error+pid->pre_pre_error);
+        pid->output=pid->kp*(pid->error-pid->pre_error)+pid->ki*pid->error+pid->kd*(pid->error-2*pid->pre_error+pid->pre_pre_error);
         pid->output=Limit(pid->output,pid->out_limit_max,pid->out_limit_min);
+
+        pid->pre_pre_error=pid->pre_error;
+        pid->pre_error=pid->error;
 
         return pid->output;
     }
 
-    pid->pre_pre_error=pid->pre_error;
-    pid->pre_error=pid->error;
+
 
 
 }

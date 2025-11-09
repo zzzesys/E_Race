@@ -38,7 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+extern PID line_pid;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -118,7 +118,7 @@ int main(void)
     Motor_SetDuty(0,50);
     Motor_SetDuty(1,50);
 
-    Line_follow();
+    Line_follow(&line_pid);
 
     /* USER CODE BEGIN 3 */
   }
