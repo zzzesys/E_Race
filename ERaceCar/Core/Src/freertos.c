@@ -47,14 +47,14 @@
 /* USER CODE BEGIN Variables */
 osThreadId chassicTaskHandle;
 /* USER CODE END Variables */
-osThreadId defaultTaskHandle;
+osThreadId Linefollow_TaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
+void Linefollow(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -101,9 +101,9 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  /* definition and creation of Linefollow_Task */
+  osThreadDef(Linefollow_Task, Linefollow, osPriorityNormal, 0, 128);
+  Linefollow_TaskHandle = osThreadCreate(osThread(Linefollow_Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   osThreadDef(chassicTask,StartChassicTask,osPriorityAboveNormal,0,256);
@@ -112,22 +112,22 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_Linefollow */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the Linefollow_Task thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+/* USER CODE END Header_Linefollow */
+void Linefollow(void const * argument)
 {
-  /* USER CODE BEGIN StartDefaultTask */
+  /* USER CODE BEGIN Linefollow */
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
-  /* USER CODE END StartDefaultTask */
+  /* USER CODE END Linefollow */
 }
 
 /* Private application code --------------------------------------------------*/

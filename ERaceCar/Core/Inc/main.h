@@ -57,14 +57,38 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define S3_Pin GPIO_PIN_2
+#define S3_GPIO_Port GPIOE
+#define S4_Pin GPIO_PIN_3
+#define S4_GPIO_Port GPIOE
+#define S5_Pin GPIO_PIN_4
+#define S5_GPIO_Port GPIOE
+#define S6_Pin GPIO_PIN_5
+#define S6_GPIO_Port GPIOE
+#define S7_Pin GPIO_PIN_6
+#define S7_GPIO_Port GPIOE
 #define RIGHT_IN1_Pin GPIO_PIN_2
 #define RIGHT_IN1_GPIO_Port GPIOF
 #define RIGHT_IN1F4_Pin GPIO_PIN_4
 #define RIGHT_IN1F4_GPIO_Port GPIOF
+#define S8_Pin GPIO_PIN_7
+#define S8_GPIO_Port GPIOE
+#define AN1_Pin GPIO_PIN_12
+#define AN1_GPIO_Port GPIOB
+#define AIN2_Pin GPIO_PIN_13
+#define AIN2_GPIO_Port GPIOB
+#define BIN1_Pin GPIO_PIN_14
+#define BIN1_GPIO_Port GPIOB
+#define BIN2_Pin GPIO_PIN_15
+#define BIN2_GPIO_Port GPIOB
 #define LEFT_IN2_Pin GPIO_PIN_9
 #define LEFT_IN2_GPIO_Port GPIOG
 #define LEFT_IN11_Pin GPIO_PIN_11
 #define LEFT_IN11_GPIO_Port GPIOG
+#define S1_Pin GPIO_PIN_0
+#define S1_GPIO_Port GPIOE
+#define S2_Pin GPIO_PIN_1
+#define S2_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
 

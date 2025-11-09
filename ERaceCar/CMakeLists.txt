@@ -21,8 +21,6 @@ endif()
 # Set the project name
 set(CMAKE_PROJECT_NAME ERaceCar)
 
-# Include toolchain file
-include("cmake/gcc-arm-none-eabi.cmake")
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -43,7 +41,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         Chassic/mpu6050.c
         Chassic/mpu6050.h
         Chassic/pid.c
-        Chassic/pid.h)
+        Chassic/pid.h
+        Chassic/line.c
+        Chassic/line.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
