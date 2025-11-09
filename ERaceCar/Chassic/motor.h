@@ -8,7 +8,7 @@
 #ifndef ERACECAR_MOTOR_H
 #define ERACECAR_MOTOR_H
 
-#define MOTOR_NUM   2
+#define MOTOR_NUM   4
 
 #define AIN1(x) HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, (x))
 #define AIN2(x) HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, (x))
@@ -36,8 +36,8 @@ typedef struct {
 
 }MotorState;
 
-
-MotorState motor[MOTOR_NUM];
+// 声明变量，定义在 motor.c 中
+extern MotorState motor[MOTOR_NUM];
 
 void Pwm_Init(void);
 void Motor_Init();

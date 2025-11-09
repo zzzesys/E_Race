@@ -39,6 +39,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 extern PID line_pid;
+extern MotorState motor[MOTOR_NUM];
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -99,6 +100,7 @@ int main(void)
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   Pwm_Init();
+  Motor_Init();
   LineCtrl_Init();
   /* USER CODE END 2 */
 
@@ -115,10 +117,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    Motor_SetDuty(0,50);
-    Motor_SetDuty(1,50);
-
-    Line_follow(&line_pid);
 
     /* USER CODE BEGIN 3 */
   }

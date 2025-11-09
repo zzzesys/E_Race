@@ -7,6 +7,11 @@
 #include "pid.h"
 #include "main.h"
 
+// 定义变量
+float sensor_weight[8] = {10, 5, 0.5, 0.35, -0.35, -0.5, -5, -10};
+int sensor_val[8];
+struct PID* line;
+
 PID line_pid;
 
 void LineCtrl_Init() {

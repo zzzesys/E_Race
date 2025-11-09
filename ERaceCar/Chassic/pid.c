@@ -64,7 +64,6 @@ float PID_Calc(PID *pid,float input) {
         return pid->output;
     }
 
-
-
-
+    // 默认返回值（不应该到达这里，但为了消除警告）
+    return 0.0f;
 }

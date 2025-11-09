@@ -18,12 +18,10 @@
 #define S7 HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_6)
 #define S8 HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_7)
 
-
-
-float sensor_weight[8]={10,5,0.5,0.35,-0.35,-0.5,-5,-10};
-int sensor_val[8];
-
-struct PID*line;
+// 声明变量，定义在 line.c 中
+extern float sensor_weight[8];
+extern int sensor_val[8];
+extern struct PID* line;
 
 void LineCtrl_Init();
 float Line_readsensor();
