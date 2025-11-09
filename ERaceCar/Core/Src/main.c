@@ -26,7 +26,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "pid.h"
+#include "motor.h"
+#include "line.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,7 +98,8 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-
+  Pwm_Init();
+  LineCtrl_Init();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
@@ -112,6 +115,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    Motor_SetDuty(0,50);
+    Motor_SetDuty(1,50);
+
+    Line_follow();
 
     /* USER CODE BEGIN 3 */
   }

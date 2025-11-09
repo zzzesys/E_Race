@@ -2,8 +2,13 @@
 // Created by 20728 on 2025/11/6.
 //
 
+//
+// Created by 20728 on 2025/11/6.
+//
+
 #include "motor.h"
 #include "main.h"
+#include "queue.h"
 #include "tim.h"
 
 
@@ -33,7 +38,12 @@ void Motor_SetDuty(uint8_t id, float duty) {
 
     uint32_t ccr = (uint32_t)(duty * 10.0f);
 
-    __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, ccr);
+    if (motor[id].id==0) {
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, ccr);
+    }
+    else if (motor[id].id==1) {
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, ccr);
+    }
 }
 
 
@@ -43,10 +53,44 @@ void Motor_SetDirection(uint8_t id, uint8_t direction) {
 
     switch (direction) {
         case Slow_Stop:
-            AN1()
-
+            if (motor[id].id==0) {
+                AIN1(GPIO_PIN_RESET);
+                AIN2(GPIO_PIN_RESET);
+            }
+            else if (motor[id].id==1) {
+                AIN1(GPIO_PIN_RESET);
+                AIN2(GPIO_PIN_RESET);
+            }
+            break;
+        case Fast_Stop:
+            if (motor[id].id==0) {
+                AIN1(GPIO_PIN_SET);
+                AIN2(GPIO_PIN_SET);
+            }
+            else if (motor[id].id==1) {
+                AIN1(GPIO_PIN_SET);
+                AIN2(GPIO_PIN_SET);
+            }
+            break;
+        case Front:
+            if (motor[id].id==0) {
+                AIN1(GPIO_PIN_SET);
+                AIN2(GPIO_PIN_RESET);
+            }
+            else if (motor[id].id==1) {
+                AIN1(GPIO_PIN_SET);
+                AIN2(GPIO_PIN_RESET);
+            }
+            break;
+        case Back:
+            if (motor[id].id==0) {
+                AIN1(GPIO_PIN_RESET);
+                AIN2(GPIO_PIN_SET);
+            }
+            else if (motor[id].id==1) {
+                AIN1(GPIO_PIN_RESET);
+                AIN2(GPIO_PIN_SET);
+            }
+            break;
     }
-
-
-
 }

@@ -6,6 +6,7 @@
 #define ERACECAR_LINE_H
 
 #include "main.h"
+#include "pid.h"
 
 // 假设 S1~S8 分别连接到 PE0~PE7
 #define S1 HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0)
@@ -23,5 +24,9 @@ float sensor_weight[8]={10,5,0.5,0.35,-0.35,-0.5,-5,-10};
 int sensor_val[8];
 
 struct PID*line;
+
+void LineCtrl_Init();
+float Line_readsensor();
+void Line_follow(PID*pid);
 
 #endif //ERACECAR_LINE_H

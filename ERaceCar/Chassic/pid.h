@@ -28,6 +28,8 @@ typedef struct {
 
 }PID;
 
+float Limit(float val,float max,float min);
+
 void PID_Init(PID *pid,PID_TYPE Type,float kp,float ki,float kd,float sum_limit_max,float sum_limit_min,float out_limit_max,float out_limit_min);
 
 void PID_SetTarget(PID *pid,float target);

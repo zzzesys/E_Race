@@ -39,4 +39,9 @@ typedef struct {
 
 MotorState motor[MOTOR_NUM];
 
+void Pwm_Init(void);
+void Motor_Init();
+void Motor_SetDuty(uint8_t id, float duty);
+void Motor_SetDirection(uint8_t id, uint8_t direction);
+
 #endif //ERACECAR_MOTOR_H
