@@ -25,6 +25,6 @@ extern struct PID* line;
 
 void LineCtrl_Init();
 float Line_readsensor();
-void Line_follow(PID*pid);
+void Line_follow(void);
 
 #endif //ERACECAR_LINE_H

@@ -6,16 +6,23 @@
 #include "motor.h"
 #include "pid.h"
 #include "main.h"
+#include "cmsis_os.h"
 
-// 定义变量
-float sensor_weight[8] = {10, 5, 0.5, 0.35, -0.35, -0.5, -5, -10};
+float sensor_weight[8] = {24, 13, 5, 1.0, -0.5, -2, -5, -12};
+
+
+
 int sensor_val[8];
 struct PID* line;
 
 PID line_pid;
 
 void LineCtrl_Init() {
-    PID_Init(&line_pid,PID_POSITION,1.2f,0.0f,0.02f,100,-100,100,-100);
+    // 如果 PID_Init 的参数顺序是 (pid, mode, Kp, Ki, Kd, maxOut, minOut, maxIout, minIout)
+    PID_Init(&line_pid, PID_POSITION, 1.5f, 0.0f, 0.06f, 10.0f, -10.0f, 10.0f, -10.0f);
+
+
+
     PID_SetTarget(&line_pid,0);
 }
 float Line_readsensor() {
@@ -39,17 +46,29 @@ float Line_readsensor() {
 }
 
 
-void Line_follow(PID*pid) {
-    float bias=Line_readsensor();
+void Line_follow(void) {
+    float bias = Line_readsensor();
+    osDelay(20);
+    // bias = Limit(bias, 10.0f, -10.0f);
 
-    bias/=10.0f;
-    bias=Limit(bias,1.0f,-1.0f);
+    float output = PID_Calc(&line_pid, bias);
+    // output = Limit(output, 10.0f, -10.0f);   // 请务必把返回值赋回
 
-    float output=PID_Calc(&line_pid,bias);
+    const float base_duty = 10.0f;
+    // const float scale = 3.0f;   // recommended
 
-    Motor_SetDuty(0,motor[0].duty-output*10);
-    Motor_SetDuty(1,motor[1].duty+output*10);
+    float left = base_duty + output*2.5;
+    float right = base_duty - output*2.5;
 
+    // 再次限制最终占空比在 0..100
+    left = Limit(left, 100.0f, 0.0f);
+    right = Limit(right, 100.0f, 0.0f);
+
+    Motor_SetDuty(0, left);
+    Motor_SetDuty(1, right);
+
+    osDelay(50);
 }
+
 
 
