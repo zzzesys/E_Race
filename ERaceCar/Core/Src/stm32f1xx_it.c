@@ -20,8 +20,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_it.h"
+#include "stm32f1xx_hal.h"
+#include <string.h>
+#include "openmv.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,8 +61,13 @@
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
+extern DMA_HandleTypeDef hdma_usart3_rx;
 extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart3;
 extern TIM_HandleTypeDef htim1;
+
+extern  uint8_t screen_rx;     // 用于接收1字节
+extern uint8_t screen_cmd = 0;   // 供主循环读取
 
 /* USER CODE BEGIN EV */
 
@@ -163,6 +172,20 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles DMA1 channel3 global interrupt.
+  */
+void DMA1_Channel3_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Channel3_IRQn 0 */
+
+  /* USER CODE END DMA1_Channel3_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart3_rx);
+  /* USER CODE BEGIN DMA1_Channel3_IRQn 1 */
+
+  /* USER CODE END DMA1_Channel3_IRQn 1 */
+}
+
+/**
   * @brief This function handles DMA1 channel4 global interrupt.
   */
 void DMA1_Channel4_IRQHandler(void)
@@ -218,6 +241,49 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 1 */
 }
 
+/**
+  * @brief This function handles USART3 global interrupt.
+  */
+void USART3_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_IRQn 0 */
+
+  /* USER CODE END USART3_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_IRQn 1 */
+
+  if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_IDLE))
+  {
+    __HAL_UART_CLEAR_IDLEFLAG(&huart3);
+
+    // 停止 DMA
+    HAL_UART_DMAStop(&huart3);
+
+    uint32_t recv_len = sizeof(DMA_RxBuf) - __HAL_DMA_GET_COUNTER(huart3.hdmarx);
+
+    memcpy(FrameBuf, DMA_RxBuf, recv_len);
+    FrameBuf[recv_len] = '\0';
+
+    frame_ready = 1;
+
+    // 重新开 DMA
+    HAL_UART_Receive_DMA(&huart3, DMA_RxBuf, sizeof(DMA_RxBuf));
+  }
+
+  /* USER CODE END USART3_IRQn 1 */
+}
+
 /* USER CODE BEGIN 1 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == USART1)   // USART1 接收到数据
+  {
+    screen_cmd = screen_rx;      // 保存收到的命令
+
+    // 继续接收下一个字节
+    HAL_UART_Receive_IT(&huart1, &screen_rx, 1);
+  }
+}
+
 
 /* USER CODE END 1 */

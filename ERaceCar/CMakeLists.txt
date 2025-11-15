@@ -66,7 +66,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         Chassic/pid.c
         Chassic/pid.h
         Chassic/line.c
-        Chassic/line.h)
+        Chassic/line.h
+        Chassic/openmv.c
+        Chassic/openmv.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)

@@ -11,9 +11,16 @@
             }
         },
         {
-            "name": "Debug",
-            "displayName": "Debug Configuration",
+            "name": "Debug-Preset",
+            "displayName": "Debug",
+            "description": "Debug build with debug symbols",
             "inherits": "default",
+            "binaryDir": "${sourceDir}/build/Debug",
+            "vendor": {
+                "microsoft.com/CMakeTools/1.0": {
+                    "intelliSenseMode": "gcc-arm"
+                }
+            },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
@@ -42,8 +49,8 @@
     ],
     "buildPresets": [
         {
-            "name": "Debug",
-            "configurePreset": "Debug"
+            "name": "Debug-Preset",
+            "configurePreset": "Debug-Preset"
         },
         {
             "name": "RelWithDebInfo",

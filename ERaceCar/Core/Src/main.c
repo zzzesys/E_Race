@@ -29,6 +29,7 @@
 #include "pid.h"
 #include "motor.h"
 #include "line.h"
+#include "openmv.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -39,7 +40,8 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 extern PID line_pid;
-extern MotorState motor[MOTOR_NUM];
+extern  uint8_t screen_rx;     // 用于接收1字节
+extern uint8_t screen_cmd = 0;   // 供主循环读取
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -78,10 +80,13 @@ int main(void)
 
   /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  /* Reset of all peripherals, Initializes the Flash interface and the SysTick. */
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  MX_DMA_Init();
+  MX_USART3_UART_Init();
+
 
   /* USER CODE END Init */
 
@@ -98,10 +103,15 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   Pwm_Init();
   Motor_Init();
   LineCtrl_Init();
+  MX_USART1_UART_Init();
+
+  HAL_UART_Receive_IT(&huart1, &screen_rx, 1);
+
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
@@ -114,12 +124,15 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  }
+  DMA_Start();
+  // 主循环：嵌入式系统的主循环，有意设计为无限循环
+  // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,hicpp-no-assembler)
+  // for (;;)  // 有意设计的无限循环
+  // {
+  //   /* USER CODE END WHILE */
+  //
+  //   /* USER CODE BEGIN 3 */
+  // }
   /* USER CODE END 3 */
 }
 
@@ -167,12 +180,13 @@ void SystemClock_Config(void)
 /* USER CODE END 4 */
 
 /**
-  * @brief  Period elapsed callback in non blocking mode
+  * @brief  Period elapsed callback in non-blocking mode
   * @note   This function is called  when TIM1 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
   * @retval None
+  * @note   Parameter is non-const to match HAL library weak function signature
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -197,9 +211,11 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
-  while (1)
-  {
-  }
+  // 错误处理：进入死循环，这是错误处理的标准做法
+  // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,hicpp-no-assembler)
+  // for (;;)  // 有意设计的错误处理死循环
+  // {
+  // }
   /* USER CODE END Error_Handler_Debug */
 }
 
